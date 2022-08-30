@@ -1,14 +1,17 @@
 from os import system
+import json
 import PySimpleGUI as sg
 import discum
 import sys
-# i wanna fucking de-alive myself bruh
 
-with open("settings.ini") as mytxt:    # parses the token from and external file
-    for line in mytxt:
-        bot = discum.Client(token=line, log=False)
-channel = "REPLACE WITH CHANNELID"
-sp = "                  "
+with open('settings.json') as f:
+    d = json.load(f)
+    token = str(d["token"])
+    channelid = str(d["channelid"])
+
+
+bot = discum.Client(token=token, log=False)
+channel = channelid
 system('cls')
 sg.theme("DarkGray15")
 sg.set_options(font=("Consolas", 9), text_color='#FFFFFF')
@@ -32,15 +35,15 @@ def customsong():
     window.close()
 
 maingui = [[sg.Text("MAIN GUI")],
-           [sg.Button("Pause")],
-           [sg.Button("UnPause")],
+           [sg.Button("Pause"), sg.Button("UnPause")],
            [sg.Button("Leave")],
            [sg.Button("Loop")],
            [sg.Button("Lyrics")],
            [sg.Text("Queue GUI")],
            [sg.Button("Show Queue")],
            [sg.Button("Skip")],
-           [sg.Button("Remove 1st From Queue")]]
+           [sg.Button("Remove 1st From Queue")],
+           [sg.Text("")]]
 
 playgui = [[sg.Text("QuickPlay")],
            [sg.Button("Kwite - Backrooms")],
