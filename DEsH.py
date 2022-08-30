@@ -1,14 +1,18 @@
 from os import system
-import json
+from time import sleep
+from json import load
 import PySimpleGUI as sg
 import discum
 import sys
 
+def sand(send):
+    bot.sendMessage(str(channel), send)
+    sleep(1)
+
 with open('settings.json') as f:
-    d = json.load(f)
+    d = load(f)
     token = str(d["token"])
     channelid = str(d["channelid"])
-
 
 bot = discum.Client(token=token, log=False)
 channel = channelid
@@ -29,7 +33,7 @@ def customsong():
         if event in (None, 'Exit'):
             break
         elif event == 'Submit':
-            bot.sendMessage(str(channel), ';play ' + window['-INPUT-'].get())
+            sand(';play ' + window['-INPUT-'].get())
             break
 
     window.close()
@@ -40,10 +44,11 @@ maingui = [[sg.Text("MAIN GUI")],
            [sg.Button("Loop")],
            [sg.Button("Lyrics")],
            [sg.Text("Queue GUI")],
-           [sg.Button("Show Queue")],
-           [sg.Button("Skip")],
+           [sg.Button("Show Queue"), sg.Button("Skip")],
            [sg.Button("Remove 1st From Queue")],
-           [sg.Text("")]]
+           [sg.Text("")],
+           [sg.Text("DEsH v2.1")],
+           [sg.Text("CopyLeft Xemulated 2022")]]
 
 playgui = [[sg.Text("QuickPlay")],
            [sg.Button("Kwite - Backrooms")],
@@ -53,8 +58,9 @@ playgui = [[sg.Text("QuickPlay")],
            [sg.Button("Never Gonna Give You Up")],
            [sg.Button("XenoGenesis")],
            [sg.Button("Wenamachiindasama")],
+           [sg.Button("Welcum to the cum zone")],
            [sg.Button("Custom song")],
-           [sg.Text("            By Xemulated")]]
+           [sg.Text("")]]
 
 layout = [[sg.VSeperator(),
            sg.Column(maingui),
@@ -62,7 +68,7 @@ layout = [[sg.VSeperator(),
            sg.Column(playgui),
            sg.VSeperator()]]
 
-window = sg.Window("DEsH", layout)
+window = sg.Window("DEsH2", layout)
 
 while True:
     event, values = window.read()
@@ -70,52 +76,55 @@ while True:
         exit()
 
     elif event == "Skip":
-        bot.sendMessage(str(channel), ';skip')
+        sand(';skip')
 
     elif event == "Loop":
-        bot.sendMessage(str(channel), ';loop')
-    
+        sand(';loop')
+
     elif event == "Lyrics":
-        bot.sendMessage(str(channel), ';lyrics')
+        sand(';lyrics')
 
     elif event == "Pause":
-        bot.sendMessage(str(channel), ';pause')
+        sand(';pause')
 
     elif event == "UnPause":
-        bot.sendMessage(str(channel), ';play')
+        sand(';play')
 
     elif event == "Leave":
-        bot.sendMessage(str(channel), ';leave')
+        sand(';leave')
 
     elif event == "Show Queue":
-        bot.sendMessage(str(channel), ';q')
+        sand(';q')
+
+    elif event == "Welcum to the cum zone":
+        sand(';play Welcum to the cum zone')
 
     elif event == "Kwite - Backrooms":
-        bot.sendMessage(str(channel), ';play Kwite - the backrooms')
+        sand(';play Kwite - the backrooms')
 
     elif event == "ANSI.sys":
-        bot.sendMessage(str(channel), ';play Master Boot Record - ANSI.SYS')
+        sand(';play Master Boot Record - ANSI.SYS')
 
     elif event == "IMMA SHIT MY PANTS":
-        bot.sendMessage(str(channel), ';play Binky the Slinky - IMMA SHIT MY PANTS')
+        sand(';play Binky the Slinky - IMMA SHIT MY PANTS')
 
     elif event == "Better Call Saul":
-        bot.sendMessage(str(channel), ';play Better Call Saul')
+        sand(';play Better Call Saul')
 
     elif event == "Never Gonna Give You Up":
-        bot.sendMessage(str(channel), ';play Rick Astley - Never Gonna Give You Up')
+        sand(';play Rick Astley - Never Gonna Give You Up')
 
     elif event == "XenoGenesis":
-        bot.sendMessage(str(channel), ';play TheFatRat - Xenogenesis')
+        sand(';play TheFatRat - Xenogenesis')
 
     elif event == "Wenamachiindasama":
-        bot.sendMessage(str(channel), ';play Calvin Harris - Summer')
+        sand(';play Calvin Harris - Summer')
 
     elif event == "Custom song":
         customsong()
 
     elif event == "Skip":
-        bot.sendMessage(str(channel), ';skip')
+        sand(';skip')
 
     elif event == "Remove 1st From Queue":
-        bot.sendMessage(str(channel), ';remove 1')
+        sand(';remove 1')
