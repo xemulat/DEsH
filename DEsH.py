@@ -1,71 +1,118 @@
 from os import system
-import sys
-import base58
 import PySimpleGUI as sg
+import discum
+import sys
 # i wanna fucking de-alive myself bruh
 
-sp = "                                      "
-
-def starter(todo):
-    return "python DEsH-Server.py --todo " + todo + " && cls"
-
-
+with open("settings.ini") as mytxt:    # parses the token from and external file
+    for line in mytxt:
+        bot = discum.Client(token=line, log=False)
+channel = "REPLACE WITH CHANNELID"
+sp = "                  "
 system('cls')
+sg.theme("DarkGray15")
+sg.set_options(font=("Consolas", 9), text_color='#FFFFFF')
 
-def playgui():
-    layout = [[sg.Text("What to play? (app will freeze for ~5s)  ")],
-             [sg.Button("Kwite - Backrooms")],
-             [sg.Button("ANSI.sys")],
-             [sg.Button("IMMA SHIT MY PANTS")],
-             [sg.Button("Better Call Saul")],
-             [sg.Button("Never Gonna Give You Up")],
-             [sg.Button("Custom song (look at the console)")],
-             [sg.Button("Back")]]
+def customsong():
+    custom = [[sg.Text('Enter Song URL / Name:')],
+              [sg.Input('', enable_events=True,  key='-INPUT-', )],
+              [sg.Button('Ok', key='-OK-'), sg.Button('Exit')],
+              [sg.Button('Submit', visible=False, bind_return_key=True)]]
 
-    window = sg.Window("DEsH SongClient", layout, background_color='#000000')
+    window = sg.Window('DEsH Custom Song', custom)
 
     while True:
         event, values = window.read()
-        if event == "Kwite - Backrooms":
-            system(starter("KwiteBackrooms"))
-        if event == "ANSI.sys":
-            system(starter("AnsiSys"))
-        if event == "IMMA SHIT MY PANTS":
-            system(starter("IMMASHITMYPANTS"))
-        if event == "Better Call Saul":
-            system(starter("BetterCallSaul"))
-        if event == "Never Gonna Give You Up":
-            system(starter("NeverGonnaGiveYouUp"))
-        if event == "Custom song (look at the console)":
-            songname = input("INPUT THE SONG'S NAME: ")
-            with open('temp.txt', 'w') as f:
-                f.write(songname)
-            system(starter("Custom"))
-        if event == sg.WIN_CLOSED or event == "Back":
+        if event in (None, 'Exit'):
+            break
+        elif event == 'Submit':
+            bot.sendMessage(str(channel), ';play ' + window['-INPUT-'].get())
             break
 
     window.close()
 
+maingui = [[sg.Text("MAIN GUI")],
+           [sg.Button("Pause")],
+           [sg.Button("UnPause")],
+           [sg.Button("Leave")],
+           [sg.Button("Loop")],
+           [sg.Button("Lyrics")],
+           [sg.Text("Queue GUI")],
+           [sg.Button("Show Queue")],
+           [sg.Button("Skip")],
+           [sg.Button("Remove 1st From Queue")]]
 
-def maingui():
-    layout = [[sg.Text("What to do?" + sp)],
-              [sg.Button("Play Something")],
-              [sg.Button("Show Queue")],
-              [sg.Button("Skip")],
-              [sg.Button("Exit")]]
-    window = sg.Window("DEsH Client", layout, background_color='#000000')
+playgui = [[sg.Text("QuickPlay")],
+           [sg.Button("Kwite - Backrooms")],
+           [sg.Button("ANSI.sys")],
+           [sg.Button("IMMA SHIT MY PANTS")],
+           [sg.Button("Better Call Saul")],
+           [sg.Button("Never Gonna Give You Up")],
+           [sg.Button("XenoGenesis")],
+           [sg.Button("Wenamachiindasama")],
+           [sg.Button("Custom song")],
+           [sg.Text("            By Xemulated")]]
 
-    while True:
-        event, values = window.read()
-        if event == "Play Something":
-            playgui()
-        if event == "Skip":
-            system(starter("Skip"))
-        if event == "Show Queue":
-            system(starter("Queue"))
-        if event == sg.WIN_CLOSED or event == "Exit":
-            break
+layout = [[sg.VSeperator(),
+           sg.Column(maingui),
+           sg.VSeperator(),
+           sg.Column(playgui),
+           sg.VSeperator()]]
 
-    window.close()
+window = sg.Window("DEsH", layout)
 
-maingui()
+while True:
+    event, values = window.read()
+    if event == "Exit" or event == sg.WIN_CLOSED:
+        exit()
+
+    elif event == "Skip":
+        bot.sendMessage(str(channel), ';skip')
+
+    elif event == "Loop":
+        bot.sendMessage(str(channel), ';loop')
+    
+    elif event == "Lyrics":
+        bot.sendMessage(str(channel), ';lyrics')
+
+    elif event == "Pause":
+        bot.sendMessage(str(channel), ';pause')
+
+    elif event == "UnPause":
+        bot.sendMessage(str(channel), ';play')
+
+    elif event == "Leave":
+        bot.sendMessage(str(channel), ';leave')
+
+    elif event == "Show Queue":
+        bot.sendMessage(str(channel), ';q')
+
+    elif event == "Kwite - Backrooms":
+        bot.sendMessage(str(channel), ';play Kwite - the backrooms')
+
+    elif event == "ANSI.sys":
+        bot.sendMessage(str(channel), ';play Master Boot Record - ANSI.SYS')
+
+    elif event == "IMMA SHIT MY PANTS":
+        bot.sendMessage(str(channel), ';play Binky the Slinky - IMMA SHIT MY PANTS')
+
+    elif event == "Better Call Saul":
+        bot.sendMessage(str(channel), ';play Better Call Saul')
+
+    elif event == "Never Gonna Give You Up":
+        bot.sendMessage(str(channel), ';play Rick Astley - Never Gonna Give You Up')
+
+    elif event == "XenoGenesis":
+        bot.sendMessage(str(channel), ';play TheFatRat - Xenogenesis')
+
+    elif event == "Wenamachiindasama":
+        bot.sendMessage(str(channel), ';play Calvin Harris - Summer')
+
+    elif event == "Custom song":
+        customsong()
+
+    elif event == "Skip":
+        bot.sendMessage(str(channel), ';skip')
+
+    elif event == "Remove 1st From Queue":
+        bot.sendMessage(str(channel), ';remove 1')
