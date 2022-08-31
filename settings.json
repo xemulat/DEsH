@@ -1,4 +1,6 @@
 {
-    "token": "YOUR.TOKEN",
-    "channelid": "YOUR.CHANNELID"
+    "token": "Your Token Here",
+    "channelid": "Your ChannelID Here",
+    "activateaddon": "true",
+    "prefix": ";"
 }
